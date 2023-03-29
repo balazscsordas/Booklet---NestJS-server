@@ -5,11 +5,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: [
-      'https://64243a57a7a6f1126a1c345a--unrivaled-gingersnap-14ff90.netlify.app',
-      'https://unrivaled-gingersnap-14ff90.netlify.app',
-      'http://localhost:4200',
-    ],
+    origin: '*',
   });
 
   const config = new DocumentBuilder()
