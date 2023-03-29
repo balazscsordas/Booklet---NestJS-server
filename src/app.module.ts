@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { WordsModule } from './words/words.module';
 import { Word } from './words/word.entity';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { User } from './auth/auth.entity';
 
 @Module({
   imports: [
@@ -16,10 +18,11 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PW,
       database: process.env.DB,
-      entities: [Word],
+      entities: [Word, User],
       synchronize: true,
     }),
     WordsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
