@@ -22,6 +22,9 @@ export class WordsService {
         .select()
         .orderBy('RAND()')
         .getOne();
+      if (randomWord == null) {
+        throw new HttpException('Word list is empty', HttpStatus.NO_CONTENT);
+      }
       const randomWordDto = {
         id: randomWord.id,
         wordFrom: randomWord.hun,
@@ -30,10 +33,14 @@ export class WordsService {
       return randomWordDto;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
-        'Serverside error occured',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      if (err.status == 204) {
+        throw new HttpException('Word list is empty', HttpStatus.NO_CONTENT);
+      } else {
+        throw new HttpException(
+          `Serverside error occured.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
     }
   }
 
@@ -45,13 +52,20 @@ export class WordsService {
         .skip((page - 1) * 20)
         .take(20)
         .getMany();
+      if (words.length === 0 || !words) {
+        throw new HttpException('Havent added any word', HttpStatus.NO_CONTENT);
+      }
       return words;
     } catch (err) {
       console.log(err);
-      throw new HttpException(
-        'Serverside error occured',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      if (err.status == 204) {
+        throw new HttpException('Word list is empty', HttpStatus.NO_CONTENT);
+      } else {
+        throw new HttpException(
+          `Serverside error occured.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
     }
   }
 
