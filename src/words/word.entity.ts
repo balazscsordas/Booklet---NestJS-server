@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/auth/auth.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'words' })
 export class Word {
@@ -10,4 +17,11 @@ export class Word {
 
   @Column()
   eng: string;
+
+  @Column()
+  user_id: number;
+
+  @ManyToOne(() => User, (user) => user.words)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

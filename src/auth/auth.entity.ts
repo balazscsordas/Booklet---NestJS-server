@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Word } from 'src/words/word.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
 export class User {
@@ -6,8 +7,11 @@ export class User {
   id: number;
 
   @Column({ unique: true })
-  username: string;
+  email: string;
 
   @Column()
   password: string;
+
+  @OneToMany(() => Word, (word) => word.user)
+  words: Word[];
 }
