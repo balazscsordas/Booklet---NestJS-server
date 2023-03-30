@@ -32,7 +32,7 @@ export class AuthService {
       const accessToken = await this.jwtService.signAsync(jwtPayload, {
         secret: process.env.JWT_SECRET,
       });
-      return { message: 'Authorized', accessToken };
+      return accessToken;
     } catch (err) {
       console.log(err);
       if (err.status == 401) {

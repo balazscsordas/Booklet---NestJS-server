@@ -32,7 +32,6 @@ export class WordsService {
       };
       return randomWordDto;
     } catch (err) {
-      console.log(err);
       if (err.status == 204) {
         throw new HttpException('Word list is empty', HttpStatus.NO_CONTENT);
       } else {
