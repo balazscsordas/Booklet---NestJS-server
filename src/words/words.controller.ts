@@ -7,7 +7,9 @@ import {
   Query,
   Post,
   Put,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { AddNewWordDto } from './dto/AddNewWord.dto';
 import { EditWordDto } from './dto/EditWord.dto';
 import { WordsService } from './words.service';
@@ -17,7 +19,8 @@ export class WordsController {
   constructor(private wordsService: WordsService) {}
 
   @Get('GetOneRandom')
-  async getOneRandom() {
+  async getOneRandom(@Req() req: Request) {
+    console.log(req['user']);
     const randomWordDto = await this.wordsService.getOneRandom();
     return randomWordDto;
   }
