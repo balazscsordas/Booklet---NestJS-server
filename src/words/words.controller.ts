@@ -20,8 +20,8 @@ export class WordsController {
 
   @Get('GetOneRandom')
   async getOneRandom(@Req() req: Request) {
-    console.log(req['user']);
-    const randomWordDto = await this.wordsService.getOneRandom();
+    const userId: number = req['userId'];
+    const randomWordDto = await this.wordsService.getOneRandom(userId);
     return randomWordDto;
   }
 
@@ -32,20 +32,22 @@ export class WordsController {
   }
 
   @Get('GetAll')
-  async getAll(@Query('page') page: string) {
-    console.log(page);
-    const words = await this.wordsService.getAll(Number(page));
+  async getAll(@Query('page') page: string, @Req() req: Request) {
+    const userId: number = req['userId'];
+    const words = await this.wordsService.getAll(Number(page), userId);
     return words;
   }
 
   @Post('AddNewWord')
-  async addNewWord(@Body() newWordData: AddNewWordDto) {
-    return await this.wordsService.addNewWord(newWordData);
+  async addNewWord(@Body() newWordData: AddNewWordDto, @Req() req: Request) {
+    const userId: number = req['userId'];
+    return await this.wordsService.addNewWord(newWordData, userId);
   }
 
   @Put('EditWord')
-  async editWord(@Body() newWordData: EditWordDto) {
-    return await this.wordsService.editWord(newWordData);
+  async editWord(@Body() newWordData: EditWordDto, @Req() req: Request) {
+    const userId: number = req['userId'];
+    return await this.wordsService.editWord(newWordData, userId);
   }
 
   @Delete('DeleteOneById/:id')

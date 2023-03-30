@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -6,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
+import { AddNewWordDto } from './dto/AddNewWord.dto';
 import { EditWordDto } from './dto/EditWord.dto';
 import { Word } from './word.entity';
 
@@ -15,11 +17,12 @@ export class WordsService {
     @InjectRepository(Word) private wordRepository: Repository<Word>,
   ) {}
 
-  async getOneRandom() {
+  async getOneRandom(userId: number) {
     try {
       const randomWord = await this.wordRepository
         .createQueryBuilder('word')
         .select()
+        .where({ user_id: userId })
         .orderBy('RAND()')
         .getOne();
       if (randomWord == null) {
@@ -43,11 +46,12 @@ export class WordsService {
     }
   }
 
-  async getAll(page: number) {
+  async getAll(page: number, userId: number) {
     try {
       const words = await this.wordRepository
         .createQueryBuilder('word')
         .select()
+        .where({ user_id: userId })
         .skip((page - 1) * 20)
         .take(20)
         .getMany();
@@ -91,9 +95,12 @@ export class WordsService {
     }
   }
 
-  async addNewWord(newWordData) {
+  async addNewWord(newWordData: AddNewWordDto, userId: number) {
     try {
-      const newWord = this.wordRepository.create({ ...newWordData });
+      const newWord = this.wordRepository.create({
+        ...newWordData,
+        user_id: userId,
+      });
       const savedWord = await this.wordRepository.save(newWord);
     } catch (err) {
       console.log(err);
@@ -111,11 +118,11 @@ export class WordsService {
     }
   }
 
-  async editWord(newWordData: EditWordDto) {
+  async editWord(newWordData: EditWordDto, userId: number) {
     try {
       const word = await this.wordRepository.update(
         { id: newWordData.id },
-        newWordData,
+        { ...newWordData, user_id: userId },
       );
       const editedWord = await this.wordRepository.findOne({
         where: { id: newWordData.id },
