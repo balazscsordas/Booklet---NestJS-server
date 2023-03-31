@@ -1,5 +1,4 @@
 import {
-  ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -69,6 +68,26 @@ export class WordsService {
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
+    }
+  }
+
+  async getMaxPageNumber(userId: number) {
+    try {
+      const numberOfWords = await this.wordRepository.count({
+        where: { user_id: userId },
+      });
+      if (numberOfWords === 0) {
+        return 1;
+      }
+      const maxPageNumber = Math.ceil(numberOfWords / 20);
+      console.log(maxPageNumber);
+      return maxPageNumber;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        `Serverside error occured.`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

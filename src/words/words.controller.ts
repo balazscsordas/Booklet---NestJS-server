@@ -38,6 +38,13 @@ export class WordsController {
     return words;
   }
 
+  @Get('GetMaxPageNumber')
+  async getMaxPageNumber(@Req() req: Request) {
+    const userId: number = req['userId'];
+    const MaxPageNumber = await this.wordsService.getMaxPageNumber(userId);
+    return MaxPageNumber;
+  }
+
   @Post('AddNewWord')
   async addNewWord(@Body() newWordData: AddNewWordDto, @Req() req: Request) {
     const userId: number = req['userId'];
