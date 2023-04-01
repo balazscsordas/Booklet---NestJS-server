@@ -41,8 +41,15 @@ export class WordsController {
   @Get('GetMaxPageNumber')
   async getMaxPageNumber(@Req() req: Request) {
     const userId: number = req['userId'];
-    const MaxPageNumber = await this.wordsService.getMaxPageNumber(userId);
-    return MaxPageNumber;
+    const maxPageNumber = await this.wordsService.getMaxPageNumber(userId);
+    return maxPageNumber;
+  }
+
+  @Get('GetLanguageOptions')
+  async getLanguageOptions(@Req() req: Request) {
+    const userId: number = req['userId'];
+    const languageOptions = await this.wordsService.getLanguageOptions(userId);
+    return languageOptions;
   }
 
   @Post('AddNewWord')

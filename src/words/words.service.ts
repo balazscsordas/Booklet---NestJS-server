@@ -91,6 +91,15 @@ export class WordsService {
     }
   }
 
+  async getLanguageOptions(userId: number) {
+    try {
+      const languageOptions = ['hun', 'eng'];
+      return languageOptions;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async getOneById(id: number) {
     try {
       const word = await this.wordRepository.findOne({ where: { id } });
