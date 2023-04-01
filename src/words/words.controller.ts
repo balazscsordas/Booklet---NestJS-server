@@ -13,15 +13,29 @@ import { Request } from 'express';
 import { AddNewWordDto } from './dto/AddNewWord.dto';
 import { EditWordDto } from './dto/EditWord.dto';
 import { WordsService } from './words.service';
+import { GetRandomWordDto } from './dto/GetRandomWord.dto';
 
 @Controller('Words')
 export class WordsController {
   constructor(private wordsService: WordsService) {}
 
   @Get('GetOneRandom')
-  async getOneRandom(@Req() req: Request) {
+  async getOneRandom(
+    @Req() req: Request,
+    @Query('languageFrom') languageFrom: string,
+    @Query('languageTo') languageTo: string,
+    @Query('randomLanguage') randomLanguage: string,
+  ) {
     const userId: number = req['userId'];
-    const randomWordDto = await this.wordsService.getOneRandom(userId);
+    const quizSettings: GetRandomWordDto = {
+      languageFrom,
+      languageTo,
+      randomLanguage,
+    };
+    const randomWordDto = await this.wordsService.getOneRandom(
+      userId,
+      quizSettings,
+    );
     return randomWordDto;
   }
 

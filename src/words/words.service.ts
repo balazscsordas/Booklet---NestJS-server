@@ -9,14 +9,17 @@ import { QueryFailedError, Repository } from 'typeorm';
 import { AddNewWordDto } from './dto/AddNewWord.dto';
 import { EditWordDto } from './dto/EditWord.dto';
 import { Word } from './word.entity';
+import { GetRandomWordDto } from './dto/GetRandomWord.dto';
+import { WordHelperService } from 'src/helpers/word-helper/word-helper.service';
 
 @Injectable()
 export class WordsService {
   constructor(
     @InjectRepository(Word) private wordRepository: Repository<Word>,
+    private wordHelper: WordHelperService,
   ) {}
 
-  async getOneRandom(userId: number) {
+  async getOneRandom(userId: number, quizSettings: GetRandomWordDto) {
     try {
       const randomWord = await this.wordRepository
         .createQueryBuilder('word')
@@ -27,12 +30,11 @@ export class WordsService {
       if (randomWord == null) {
         throw new HttpException('Word list is empty', HttpStatus.NO_CONTENT);
       }
-      const randomWordDto = {
-        id: randomWord.id,
-        wordFrom: randomWord.hun,
-        wordTo: randomWord.eng,
-      };
-      return randomWordDto;
+      const formattedWord = this.wordHelper.WordFormatter(
+        randomWord,
+        quizSettings,
+      );
+      return formattedWord;
     } catch (err) {
       if (err.status == 204) {
         throw new HttpException('Word list is empty', HttpStatus.NO_CONTENT);
