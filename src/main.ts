@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
-    origin: ['https://booklet-app.netlify.app', 'http://localhost:4200'],
+    origin: [process.env.CLIENT_URL],
   });
 
   const config = new DocumentBuilder()
