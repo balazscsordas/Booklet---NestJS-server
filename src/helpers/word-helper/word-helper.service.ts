@@ -37,3 +37,4 @@ export class WordHelperService {
     return randomIndex === 0 ? value1 : value2;
   }
 }
+//a
