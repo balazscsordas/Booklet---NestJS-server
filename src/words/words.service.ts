@@ -61,7 +61,6 @@ export class WordsService {
       }
       return words;
     } catch (err) {
-      console.log(err);
       if (err.status == 204) {
         throw new HttpException('Word list is empty', HttpStatus.NO_CONTENT);
       } else {
