@@ -6,7 +6,7 @@ async function bootstrap() {
   app.enableCors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
-    origin: [process.env.CLIENT_URL],
+    origin: ['https://booklet-app.netlify.app'],
   });
 
   await app.listen(process.env.PORT || 3001);
