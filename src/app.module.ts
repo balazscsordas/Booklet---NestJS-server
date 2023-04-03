@@ -19,7 +19,6 @@ import { User } from './auth/auth.entity';
       password: process.env.DB_PW,
       database: process.env.DB,
       entities: [Word, User],
-      synchronize: true,
       ssl: {
         rejectUnauthorized: false,
       },
