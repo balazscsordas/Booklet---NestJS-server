@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Word } from './word.entity';
 import { WordsController } from './words.controller';
 import { WordsService } from './words.service';
-import { WordHelperService } from 'src/helpers/word-helper.service';
+import { WordHelperService } from 'src/words/helperFunctions/word-helper.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Word])],

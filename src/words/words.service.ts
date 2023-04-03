@@ -10,7 +10,7 @@ import { AddNewWordDto } from './dto/AddNewWord.dto';
 import { EditWordDto } from './dto/EditWord.dto';
 import { Word } from './word.entity';
 import { GetRandomWordDto } from './dto/GetRandomWord.dto';
-import { WordHelperService } from 'src/helpers/word-helper.service';
+import { WordHelperService } from 'src/words/helperFunctions/word-helper.service';
 
 @Injectable()
 export class WordsService {
