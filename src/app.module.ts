@@ -14,12 +14,14 @@ import { User } from './auth/auth.entity';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
-      port: 7163, // 7163 //3306
+      port: 3306, // 7163 //3306
       username: process.env.DB_USERNAME,
       password: process.env.DB_PW,
       database: process.env.DB,
       entities: [Word, User],
-      synchronize: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     WordsModule,
     AuthModule,
