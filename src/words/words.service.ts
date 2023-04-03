@@ -10,13 +10,12 @@ import { AddNewWordDto } from './dto/AddNewWord.dto';
 import { EditWordDto } from './dto/EditWord.dto';
 import { Word } from './word.entity';
 import { GetRandomWordDto } from './dto/GetRandomWord.dto';
-import { WordHelperService } from 'src/words/helperFunctions/word-helper.service';
+import { WordFormatter } from './helper/word-formatter';
 
 @Injectable()
 export class WordsService {
   constructor(
     @InjectRepository(Word) private wordRepository: Repository<Word>,
-    private wordHelper: WordHelperService,
   ) {}
 
   async getOneRandom(userId: number, quizSettings: GetRandomWordDto) {
@@ -30,10 +29,7 @@ export class WordsService {
       if (randomWord == null) {
         throw new HttpException('Word list is empty', HttpStatus.NO_CONTENT);
       }
-      const formattedWord = this.wordHelper.WordFormatter(
-        randomWord,
-        quizSettings,
-      );
+      const formattedWord = WordFormatter(randomWord, quizSettings);
       return formattedWord;
     } catch (err) {
       if (err.status == 204) {
