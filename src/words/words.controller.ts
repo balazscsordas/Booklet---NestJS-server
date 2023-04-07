@@ -46,9 +46,17 @@ export class WordsController {
   }
 
   @Get('GetAll')
-  async getAll(@Query('page') page: string, @Req() req: Request) {
+  async getAll(
+    @Query('page') page: string,
+    @Query('searchParam') searchParam: string,
+    @Req() req: Request,
+  ) {
     const userId: number = req['userId'];
-    const words = await this.wordsService.getAll(Number(page), userId);
+    const words = await this.wordsService.getAll(
+      Number(page),
+      searchParam,
+      userId,
+    );
     return words;
   }
 
