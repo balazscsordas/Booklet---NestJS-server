@@ -1,4 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './auth.entity';
@@ -19,27 +26,27 @@ export class AuthService {
         where: { email: credentials.email },
       });
       if (!foundUser) {
-        throw new HttpException('Wrong credentials', HttpStatus.UNAUTHORIZED);
+        throw new UnauthorizedException();
       }
       const isMatch = await bcrypt.compare(
         credentials.password,
         foundUser.password,
       );
       if (!isMatch) {
-        throw new HttpException('Wrong credentials', HttpStatus.UNAUTHORIZED);
+        throw new UnauthorizedException();
       }
-      const jwtPayload = { email: foundUser.email, id: foundUser.id };
-      const accessToken = await this.jwtService.signAsync(jwtPayload, {
+      const jwtPayload = { email: foundUser.email, user_id: foundUser.id };
+      const userToken = await this.jwtService.signAsync(jwtPayload, {
         secret: process.env.JWT_SECRET,
       });
-      return accessToken;
+      return userToken;
     } catch (err) {
       console.log(err);
       if (err.status == 401) {
-        throw new HttpException('Wrong credentials', HttpStatus.UNAUTHORIZED);
+        throw new HttpException('Wrong credentials.', HttpStatus.UNAUTHORIZED);
       } else {
         throw new HttpException(
-          `Serverside error occured.`,
+          `Serverside error occured, please try again later.`,
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
@@ -52,7 +59,7 @@ export class AuthService {
         where: { email: credentials.email },
       });
       if (foundUser) {
-        throw new HttpException('User already exists', HttpStatus.FORBIDDEN);
+        throw new ConflictException();
       }
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(credentials.password, salt);
@@ -63,19 +70,19 @@ export class AuthService {
       const userToSave = this.userRepository.create({ ...newUser });
       const savedUser = await this.userRepository.save(userToSave);
       if (!savedUser) {
-        throw new HttpException(
-          `Serverside error occured.`,
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
+        throw new InternalServerErrorException();
       }
       return { message: 'Registered' };
     } catch (err) {
       console.log(err);
-      if (err.status == 403) {
-        throw new HttpException('User already exists', HttpStatus.FORBIDDEN);
+      if (err.status == 409) {
+        throw new HttpException(
+          'User already exists, please sign in.',
+          HttpStatus.CONFLICT,
+        );
       } else {
         throw new HttpException(
-          `Serverside error occured.`,
+          `Serverside error occured, please try again later.`,
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }

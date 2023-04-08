@@ -1,13 +1,15 @@
 import {
   CanActivate,
   ExecutionContext,
+  HttpException,
+  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { IS_PUBLIC_KEY } from './decorators/public-route.decorator';
+import { IS_PUBLIC_KEY } from 'src/decorators/public-route.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -31,9 +33,14 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_SECRET,
       });
-      request['userId'] = payload.id;
-    } catch {
-      throw new UnauthorizedException();
+      request['user_id'] = payload.user_id;
+      request['profile_id'] = payload.profile_id;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException(
+        `Your session has expired, please sign in.`,
+        HttpStatus.UNAUTHORIZED,
+      );
     }
     return true;
   }

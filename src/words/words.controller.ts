@@ -26,14 +26,14 @@ export class WordsController {
     @Query('languageTo') languageTo: string,
     @Query('randomLanguage') randomLanguage: string,
   ) {
-    const userId: number = req['userId'];
+    const profile_id: number = req['profile_id'];
     const quizSettings: GetRandomWordDto = {
       languageFrom,
       languageTo,
       randomLanguage,
     };
     const randomWordDto = await this.wordsService.getOneRandom(
-      userId,
+      profile_id,
       quizSettings,
     );
     return randomWordDto;
@@ -51,39 +51,32 @@ export class WordsController {
     @Query('searchParam') searchParam: string,
     @Req() req: Request,
   ) {
-    const userId: number = req['userId'];
+    const profile_id: number = req['profile_id'];
     const words = await this.wordsService.getAll(
       Number(page),
       searchParam,
-      userId,
+      profile_id,
     );
     return words;
   }
 
   @Get('GetMaxPageNumber')
   async getMaxPageNumber(@Req() req: Request) {
-    const userId: number = req['userId'];
-    const maxPageNumber = await this.wordsService.getMaxPageNumber(userId);
+    const profile_id: number = req['profile_id'];
+    const maxPageNumber = await this.wordsService.getMaxPageNumber(profile_id);
     return maxPageNumber;
-  }
-
-  @Get('GetLanguageOptions')
-  async getLanguageOptions(@Req() req: Request) {
-    const userId: number = req['userId'];
-    const languageOptions = await this.wordsService.getLanguageOptions(userId);
-    return languageOptions;
   }
 
   @Post('AddNewWord')
   async addNewWord(@Body() newWordData: AddNewWordDto, @Req() req: Request) {
-    const userId: number = req['userId'];
-    return await this.wordsService.addNewWord(newWordData, userId);
+    const profile_id: number = req['profile_id'];
+    return await this.wordsService.addNewWord(newWordData, profile_id);
   }
 
   @Put('EditWord')
   async editWord(@Body() newWordData: EditWordDto, @Req() req: Request) {
-    const userId: number = req['userId'];
-    return await this.wordsService.editWord(newWordData, userId);
+    const profile_id: number = req['profile_id'];
+    return await this.wordsService.editWord(newWordData, profile_id);
   }
 
   @Delete('DeleteOneById/:id')

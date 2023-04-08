@@ -1,4 +1,4 @@
-import { Word } from 'src/words/word.entity';
+import { Profile } from 'src/profile/profile.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'users' })
@@ -12,6 +12,6 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Word, (word) => word.user)
-  words: Word[];
+  @OneToMany(() => Profile, profile => profile.user)
+  profiles: Profile[];
 }

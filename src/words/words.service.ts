@@ -11,7 +11,6 @@ import { EditWordDto } from './dto/EditWord.dto';
 import { Word } from './word.entity';
 import { GetRandomWordDto } from './dto/GetRandomWord.dto';
 import { WordFormatter } from './helper/word-formatter';
-import { Like } from 'typeorm';
 
 @Injectable()
 export class WordsService {
@@ -19,12 +18,12 @@ export class WordsService {
     @InjectRepository(Word) private wordRepository: Repository<Word>,
   ) {}
 
-  async getOneRandom(userId: number, quizSettings: GetRandomWordDto) {
+  async getOneRandom(profile_id: number, quizSettings: GetRandomWordDto) {
     try {
       const randomWord = await this.wordRepository
         .createQueryBuilder('word')
         .select()
-        .where({ user_id: userId })
+        .where({ profile_id })
         .orderBy('RAND()')
         .getOne();
       if (randomWord == null) {
@@ -44,12 +43,12 @@ export class WordsService {
     }
   }
 
-  async getAll(page: number, searchParam: string, userId: number) {
+  async getAll(page: number, searchParam: string, profile_id: number) {
     try {
       const words = await this.wordRepository
         .createQueryBuilder('word')
         .select()
-        .where({ user_id: userId })
+        .where({ profile_id })
         .andWhere(
           new Brackets(qb => {
             if (searchParam) {
@@ -80,10 +79,10 @@ export class WordsService {
     }
   }
 
-  async getMaxPageNumber(userId: number) {
+  async getMaxPageNumber(profile_id: number) {
     try {
       const numberOfWords = await this.wordRepository.count({
-        where: { user_id: userId },
+        where: { profile_id },
       });
       if (numberOfWords === 0) {
         return 1;
@@ -96,15 +95,6 @@ export class WordsService {
         `Serverside error occured.`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
-    }
-  }
-
-  async getLanguageOptions(userId: number) {
-    try {
-      const languageOptions = ['hun', 'eng'];
-      return languageOptions;
-    } catch (err) {
-      console.log(err);
     }
   }
 
@@ -136,11 +126,11 @@ export class WordsService {
     }
   }
 
-  async addNewWord(newWordData: AddNewWordDto, userId: number) {
+  async addNewWord(newWordData: AddNewWordDto, profile_id: number) {
     try {
       const newWord = this.wordRepository.create({
         ...newWordData,
-        user_id: userId,
+        profile_id,
       });
       const savedWord = await this.wordRepository.save(newWord);
     } catch (err) {
@@ -159,11 +149,11 @@ export class WordsService {
     }
   }
 
-  async editWord(newWordData: EditWordDto, userId: number) {
+  async editWord(newWordData: EditWordDto, profile_id: number) {
     try {
-      const word = await this.wordRepository.update(
+      await this.wordRepository.update(
         { id: newWordData.id },
-        { ...newWordData, user_id: userId },
+        { ...newWordData, profile_id },
       );
       const editedWord = await this.wordRepository.findOne({
         where: { id: newWordData.id },

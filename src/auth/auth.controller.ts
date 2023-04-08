@@ -1,7 +1,6 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { PublicRoute } from './decorators/public-route.decorator';
+import { PublicRoute } from '../decorators/public-route.decorator';
 import { CredentialsDto } from './dto/Credentials.dto';
 
 @Controller('auth')
@@ -10,18 +9,9 @@ export class AuthController {
 
   @PublicRoute()
   @Post('Login')
-  async login(
-    @Body() credentials: CredentialsDto,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    const accessToken = await this.authService.login(credentials);
-    response.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      sameSite: 'none',
-      secure: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-    return { accessToken };
+  async login(@Body() credentials: CredentialsDto) {
+    const userToken = await this.authService.login(credentials);
+    return { userToken };
   }
 
   @PublicRoute()
