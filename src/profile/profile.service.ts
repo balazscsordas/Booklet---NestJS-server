@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from './profile.entity';
 import { QueryFailedError, Repository } from 'typeorm';
@@ -77,6 +82,9 @@ export class ProfileService {
       const profile = await this.profileRepository.findOne({
         where: { id: profile_id },
       });
+      if (!profile) {
+        throw new UnauthorizedException();
+      }
       const languageOptions = {
         primaryLanguage: profile.primaryLanguage,
         secondaryLanguage: profile.secondaryLanguage,
@@ -84,6 +92,17 @@ export class ProfileService {
       return languageOptions;
     } catch (err) {
       console.log(err);
+      if (err.status == 401) {
+        throw new HttpException(
+          'User doesnt have any profiles',
+          HttpStatus.NO_CONTENT,
+        );
+      } else {
+        throw new HttpException(
+          `Serverside error occured.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
     }
   }
 }
