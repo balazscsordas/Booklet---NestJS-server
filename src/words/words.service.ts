@@ -52,9 +52,9 @@ export class WordsService {
         .andWhere(
           new Brackets(qb => {
             if (searchParam) {
-              qb.where('word.hun LIKE :searchParam', {
+              qb.where('word.primaryLanguage LIKE :searchParam', {
                 searchParam: `%${searchParam}%`,
-              }).orWhere('word.eng LIKE :searchParam', {
+              }).orWhere('word.secondaryLanguage LIKE :searchParam', {
                 searchParam: `%${searchParam}%`,
               });
             }
@@ -106,8 +106,8 @@ export class WordsService {
       }
       const returnedWord = {
         id: word.id,
-        hun: word.hun,
-        eng: word.eng,
+        primaryLanguage: word.primaryLanguage,
+        secondaryLanguage: word.secondaryLanguage,
       };
       return returnedWord;
     } catch (err) {

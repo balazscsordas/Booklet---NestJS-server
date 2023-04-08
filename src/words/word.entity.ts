@@ -13,10 +13,10 @@ export class Word {
   id: number;
 
   @Column()
-  hun: string;
+  primaryLanguage: string;
 
   @Column()
-  eng: string;
+  secondaryLanguage: string;
 
   @Column()
   profile_id: number;

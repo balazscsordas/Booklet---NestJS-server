@@ -77,9 +77,10 @@ export class ProfileService {
       const profile = await this.profileRepository.findOne({
         where: { id: profile_id },
       });
-      const languageOptions = [];
-      languageOptions.push(profile.primaryLanguage);
-      languageOptions.push(profile.secondaryLanguage);
+      const languageOptions = {
+        primaryLanguage: profile.primaryLanguage,
+        secondaryLanguage: profile.secondaryLanguage,
+      };
       return languageOptions;
     } catch (err) {
       console.log(err);

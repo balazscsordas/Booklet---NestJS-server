@@ -23,13 +23,11 @@ export class WordsController {
   async getOneRandom(
     @Req() req: Request,
     @Query('languageFrom') languageFrom: string,
-    @Query('languageTo') languageTo: string,
     @Query('randomLanguage') randomLanguage: string,
   ) {
     const profile_id: number = req['profile_id'];
     const quizSettings: GetRandomWordDto = {
       languageFrom,
-      languageTo,
       randomLanguage,
     };
     const randomWordDto = await this.wordsService.getOneRandom(

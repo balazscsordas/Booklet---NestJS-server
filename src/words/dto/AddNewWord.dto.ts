@@ -1,4 +1,4 @@
 export class AddNewWordDto {
-  hun: string;
-  eng: string;
+  primaryLanguage: string;
+  secondaryLanguage: string;
 }

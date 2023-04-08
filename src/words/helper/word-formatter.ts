@@ -6,27 +6,33 @@ export const WordFormatter = (
   quizSettings: GetRandomWordDto,
 ) => {
   if (quizSettings.randomLanguage === 'true') {
-    const randomValue = getRandomValue('hun', 'eng');
+    const randomValue = getRandomValue('primaryLanguage', 'secondaryLanguage');
     const orderedWord = {
       id: wordInput.id,
-      wordFrom: randomValue === 'eng' ? wordInput.eng : wordInput.hun,
-      wordTo: randomValue === 'eng' ? wordInput.hun : wordInput.eng,
+      wordFrom:
+        randomValue === 'secondaryLanguage'
+          ? wordInput.secondaryLanguage
+          : wordInput.primaryLanguage,
+      wordTo:
+        randomValue === 'secondaryLanguage'
+          ? wordInput.primaryLanguage
+          : wordInput.secondaryLanguage,
     };
     return orderedWord;
   }
-  if (quizSettings.languageFrom === 'eng') {
+  if (quizSettings.languageFrom === 'secondaryLanguage') {
     const orderedWord = {
       id: wordInput.id,
-      wordFrom: wordInput.eng,
-      wordTo: wordInput.hun,
+      wordFrom: wordInput.secondaryLanguage,
+      wordTo: wordInput.primaryLanguage,
     };
     return orderedWord;
   }
-  if (quizSettings.languageFrom === 'hun') {
+  if (quizSettings.languageFrom === 'primaryLanguage') {
     const orderedWord = {
       id: wordInput.id,
-      wordFrom: wordInput.hun,
-      wordTo: wordInput.eng,
+      wordFrom: wordInput.primaryLanguage,
+      wordTo: wordInput.secondaryLanguage,
     };
     return orderedWord;
   }
