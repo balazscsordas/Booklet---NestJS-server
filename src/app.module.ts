@@ -12,6 +12,10 @@ import { Profile } from './profile/profile.entity';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/auth/auth.guard';
+import { MailService } from './services/mail/mail.service';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EmailModule } from './email/email.module';
+import { Token } from './email/token.entity';
 
 @Module({
   imports: [
@@ -23,7 +27,7 @@ import { AuthGuard } from './guards/auth/auth.guard';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PW,
       database: process.env.DB,
-      entities: [Word, User, Profile],
+      entities: [Word, User, Profile, Token],
       ssl: {
         rejectUnauthorized: false,
       },
@@ -32,9 +36,21 @@ import { AuthGuard } from './guards/auth/auth.guard';
       global: true,
       signOptions: { expiresIn: '1w' },
     }),
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.EMAIL_HOST,
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.EMAIL_PW,
+        },
+      },
+    }),
     WordsModule,
     AuthModule,
     ProfileModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [
@@ -44,6 +60,7 @@ import { AuthGuard } from './guards/auth/auth.guard';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    MailService,
   ],
 })
 export class AppModule {}
