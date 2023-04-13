@@ -16,6 +16,9 @@ import { MailService } from './services/mail/mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailModule } from './email/email.module';
 import { Token } from './email/token.entity';
+import { AudioController } from './audio/audio.controller';
+import { AudioService } from './audio/audio.service';
+import { TranslatorService } from './services/translator/translator.service';
 
 @Module({
   imports: [
@@ -52,7 +55,7 @@ import { Token } from './email/token.entity';
     ProfileModule,
     EmailModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AudioController],
   providers: [
     AppService,
     JwtService,
@@ -61,6 +64,8 @@ import { Token } from './email/token.entity';
       useClass: AuthGuard,
     },
     MailService,
+    AudioService,
+    TranslatorService,
   ],
 })
 export class AppModule {}

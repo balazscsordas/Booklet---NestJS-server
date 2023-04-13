@@ -11,11 +11,14 @@ import { EditWordDto } from './dto/EditWord.dto';
 import { Word } from './word.entity';
 import { GetRandomWordDto } from './dto/GetRandomWord.dto';
 import { WordFormatter } from './helper/word-formatter';
+import { TextTranslateDto } from './dto/TextTranslate.dto';
+import { TranslatorService } from 'src/services/translator/translator.service';
 
 @Injectable()
 export class WordsService {
   constructor(
     @InjectRepository(Word) private wordRepository: Repository<Word>,
+    private translatorService: TranslatorService,
   ) {}
 
   async getOneRandom(profile_id: number, quizSettings: GetRandomWordDto) {
@@ -95,6 +98,27 @@ export class WordsService {
         `Serverside error occured.`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  async getTranslation(translateParams: TextTranslateDto) {
+    try {
+      const translatedText = await this.translatorService.translateText(
+        translateParams,
+      );
+      return { translatedText };
+    } catch (err) {
+      if (err.status == 204) {
+        throw new HttpException(
+          'Daily translation quota has been exceeded.',
+          HttpStatus.EXPECTATION_FAILED,
+        );
+      } else {
+        throw new HttpException(
+          `Serverside error occured.`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
     }
   }
 

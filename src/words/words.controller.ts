@@ -14,6 +14,7 @@ import { AddNewWordDto } from './dto/AddNewWord.dto';
 import { EditWordDto } from './dto/EditWord.dto';
 import { WordsService } from './words.service';
 import { GetRandomWordDto } from './dto/GetRandomWord.dto';
+import { TextTranslateDto } from './dto/TextTranslate.dto';
 
 @Controller('Words')
 export class WordsController {
@@ -63,6 +64,11 @@ export class WordsController {
     const profile_id: number = req['profile_id'];
     const maxPageNumber = await this.wordsService.getMaxPageNumber(profile_id);
     return maxPageNumber;
+  }
+
+  @Post('Translate')
+  async getTranslation(@Body() translateParams: TextTranslateDto) {
+    return await this.wordsService.getTranslation(translateParams);
   }
 
   @Post('AddNewWord')
