@@ -26,6 +26,7 @@ export class WordsController {
     @Query('languageFrom') languageFrom: string,
     @Query('randomLanguage') randomLanguage: string,
   ) {
+    console.log(randomLanguage);
     const profile_id: number = req['profile_id'];
     const quizSettings: GetRandomWordDto = {
       languageFrom,

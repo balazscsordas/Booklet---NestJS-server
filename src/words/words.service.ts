@@ -22,6 +22,7 @@ export class WordsService {
   ) {}
 
   async getOneRandom(profile_id: number, quizSettings: GetRandomWordDto) {
+    console.log(quizSettings);
     try {
       const randomWord = await this.wordRepository
         .createQueryBuilder('word')
