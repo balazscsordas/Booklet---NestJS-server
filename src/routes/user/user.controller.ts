@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CredentialsDto } from './dto/Credentials.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { PublicRoute } from 'src/decorators/public-route.decorator';
 import { UserService } from './user.service';
+import { PublicRoute } from 'src/decorators/public-route.decorator';
 
 @ApiTags('user')
 @Controller('user')
