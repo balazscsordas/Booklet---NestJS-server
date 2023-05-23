@@ -156,7 +156,7 @@ export class WordService {
         ...newWordData,
         profile_id,
       });
-      const savedWord = await this.wordRepository.save(newWord);
+      await this.wordRepository.save(newWord);
     } catch (err) {
       console.log(err);
       if (err instanceof QueryFailedError) {
