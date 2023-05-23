@@ -5,10 +5,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Profile } from './profile.entity';
 import { QueryFailedError, Repository } from 'typeorm';
 import { NewProfileDataDto } from './dto/NewProfileData.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Profile } from 'src/models/profile.entity';
 
 @Injectable()
 export class ProfileService {

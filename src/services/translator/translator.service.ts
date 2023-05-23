@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { TextTranslateDto } from 'src/words/dto/TextTranslate.dto';
+import { TextTranslateDto } from 'src/routes/word/dto/TextTranslate.dto';
 
 @Injectable()
 export class TranslatorService {

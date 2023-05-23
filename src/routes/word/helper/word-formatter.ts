@@ -1,5 +1,5 @@
+import { Word } from 'src/models/word.entity';
 import { GetRandomWordDto } from '../dto/GetRandomWord.dto';
-import { Word } from '../word.entity';
 
 export const WordFormatter = (
   wordInput: Word,

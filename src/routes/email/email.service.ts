@@ -7,11 +7,11 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/auth/auth.entity';
+import { User } from 'src/models/auth.entity';
 import { MailService } from 'src/services/mail/mail.service';
 import { Repository } from 'typeorm';
-import { Token } from './token.entity';
 import * as bcrypt from 'bcrypt';
+import { Token } from 'src/models/token.entity';
 
 @Injectable()
 export class EmailService {

@@ -3,8 +3,8 @@ import { EmailController } from './email.controller';
 import { EmailService } from './email.service';
 import { MailService } from 'src/services/mail/mail.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/auth/auth.entity';
-import { Token } from './token.entity';
+import { User } from 'src/models/auth.entity';
+import { Token } from 'src/models/token.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Token])],

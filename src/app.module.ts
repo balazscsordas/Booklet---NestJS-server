@@ -1,24 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { WordsModule } from './words/words.module';
-import { Word } from './words/word.entity';
+import { Word } from './models/word.entity';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { User } from './auth/auth.entity';
-import { ProfileModule } from './profile/profile.module';
-import { Profile } from './profile/profile.entity';
+import { User } from './models/auth.entity';
+import { Profile } from './models/profile.entity';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { MailService } from './services/mail/mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { EmailModule } from './email/email.module';
-import { Token } from './email/token.entity';
-import { AudioController } from './audio/audio.controller';
-import { AudioService } from './audio/audio.service';
-import { TranslatorService } from './services/translator/translator.service';
+import { Token } from './models/token.entity';
+import { WordModule } from './routes/word/word.module';
+import { ProfileModule } from './routes/profile/profile.module';
+import { EmailModule } from './routes/email/email.module';
+import { UserModule } from './routes/user/user.module';
 
 @Module({
   imports: [
@@ -50,22 +45,18 @@ import { TranslatorService } from './services/translator/translator.service';
         },
       },
     }),
-    WordsModule,
-    AuthModule,
+    WordModule,
+    UserModule,
     ProfileModule,
     EmailModule,
   ],
-  controllers: [AppController, AudioController],
   providers: [
-    AppService,
     JwtService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
     MailService,
-    AudioService,
-    TranslatorService,
   ],
 })
 export class AppModule {}

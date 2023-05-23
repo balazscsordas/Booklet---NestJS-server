@@ -8,21 +8,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, QueryFailedError, Repository } from 'typeorm';
 import { AddNewWordDto } from './dto/AddNewWord.dto';
 import { EditWordDto } from './dto/EditWord.dto';
-import { Word } from './word.entity';
 import { GetRandomWordDto } from './dto/GetRandomWord.dto';
 import { WordFormatter } from './helper/word-formatter';
 import { TextTranslateDto } from './dto/TextTranslate.dto';
 import { TranslatorService } from 'src/services/translator/translator.service';
+import { Word } from 'src/models/word.entity';
 
 @Injectable()
-export class WordsService {
+export class WordService {
   constructor(
     @InjectRepository(Word) private wordRepository: Repository<Word>,
     private translatorService: TranslatorService,
   ) {}
 
   async getOneRandom(profile_id: number, quizSettings: GetRandomWordDto) {
-    console.log(quizSettings);
     try {
       const randomWord = await this.wordRepository
         .createQueryBuilder('word')

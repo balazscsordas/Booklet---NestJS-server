@@ -1,4 +1,4 @@
-import { Profile } from 'src/profile/profile.entity';
+import { Profile } from 'src/models/profile.entity';
 import {
   Column,
   Entity,

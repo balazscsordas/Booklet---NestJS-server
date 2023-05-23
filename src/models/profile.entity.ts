@@ -1,5 +1,5 @@
-import { User } from 'src/auth/auth.entity';
-import { Word } from 'src/words/word.entity';
+import { User } from 'src/models/auth.entity';
+import { Word } from 'src/models/word.entity';
 import {
   Column,
   Entity,
