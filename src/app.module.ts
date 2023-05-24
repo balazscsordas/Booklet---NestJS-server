@@ -14,6 +14,7 @@ import { WordModule } from './routes/word/word.module';
 import { ProfileModule } from './routes/profile/profile.module';
 import { EmailModule } from './routes/email/email.module';
 import { UserModule } from './routes/user/user.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { UserModule } from './routes/user/user.module';
     ProfileModule,
     EmailModule,
   ],
+  controllers: [AppController],
   providers: [
     JwtService,
     {
