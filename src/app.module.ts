@@ -15,6 +15,7 @@ import { ProfileModule } from './routes/profile/profile.module';
 import { EmailModule } from './routes/email/email.module';
 import { UserModule } from './routes/user/user.module';
 import { AppController } from './app.controller';
+import { TranslatorService } from './services/translator/translator.service';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { AppController } from './app.controller';
       useClass: AuthGuard,
     },
     MailService,
+    TranslatorService,
   ],
 })
 export class AppModule {}
