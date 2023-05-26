@@ -4,32 +4,26 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { WordList } from './word-list.entity';
+import { Word } from './word.entity';
 
-@Entity({ name: 'words' })
-export class Word {
+@Entity({ name: 'word-lists' })
+export class WordList {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  primaryLanguage: string;
-
-  @Column()
-  secondaryLanguage: string;
+  name: string;
 
   @Column()
   profile_id: number;
 
+  @OneToMany(() => Word, word => word.word_list_id)
+  words: Word[];
+
   @ManyToOne(() => Profile, profile => profile.words)
   @JoinColumn({ name: 'profile_id' })
   profile: Profile;
-
-  @Column()
-  word_list_id: number;
-
-  @ManyToOne(() => WordList, wordList => wordList.words)
-  @JoinColumn({ name: 'word_list_id' })
-  word_list: WordList;
 }

@@ -55,14 +55,16 @@ export class WordController {
   @ApiOperation({
     summary: 'Returns a list of words from the list of a specific profile.',
   })
-  @Get('all')
+  @Get('wordListId/:wordListId')
   async getAll(
+    @Param('wordListId') wordListId: string,
     @Query('page') page: string,
     @Query('searchParam') searchParam: string,
     @Req() req: Request,
   ) {
     const profile_id: number = req['profile_id'];
-    const words = await this.wordService.getAll(
+    const words = await this.wordService.getWordsByWordListId(
+      Number(wordListId),
       Number(page),
       searchParam,
       profile_id,

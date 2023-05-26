@@ -46,12 +46,18 @@ export class WordService {
     }
   }
 
-  async getAll(page: number, searchParam: string, profile_id: number) {
+  async getWordsByWordListId(
+    wordListId: number,
+    page: number,
+    searchParam: string,
+    profile_id: number,
+  ) {
     try {
       const words = await this.wordRepository
         .createQueryBuilder('word')
         .select()
         .where({ profile_id })
+        .andWhere({ word_list_id: wordListId })
         .andWhere(
           new Brackets(qb => {
             if (searchParam) {
@@ -156,7 +162,8 @@ export class WordService {
         ...newWordData,
         profile_id,
       });
-      await this.wordRepository.save(newWord);
+      const savedWord = await this.wordRepository.save(newWord);
+      return savedWord;
     } catch (err) {
       console.log(err);
       if (err instanceof QueryFailedError) {

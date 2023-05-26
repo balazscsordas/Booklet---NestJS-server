@@ -16,6 +16,8 @@ import { EmailModule } from './routes/email/email.module';
 import { UserModule } from './routes/user/user.module';
 import { AppController } from './app.controller';
 import { TranslatorService } from './services/translator/translator.service';
+import { WordListModule } from './routes/word-list/word-list.module';
+import { WordList } from './models/word-list.entity';
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { TranslatorService } from './services/translator/translator.service';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PW,
       database: process.env.DB,
-      entities: [Word, User, Profile, Token],
+      entities: [Word, User, Profile, Token, WordList],
       ssl: {
         rejectUnauthorized: false,
       },
@@ -51,6 +53,7 @@ import { TranslatorService } from './services/translator/translator.service';
     UserModule,
     ProfileModule,
     EmailModule,
+    WordListModule,
   ],
   controllers: [AppController],
   providers: [
